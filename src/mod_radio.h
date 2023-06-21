@@ -12,6 +12,8 @@
 #include <unordered_map>
 #include <atomic>
 
+#include "tokovoip.h"
+
 namespace thorwe {
 namespace ts {
     using connection_id_t = std::uint64_t;
@@ -28,7 +30,7 @@ class Radio : public Module, public TalkInterface
     Q_PROPERTY(ts::connection_id_t homeId READ homeId WRITE setHomeId)
 
 public:
-    explicit Radio(TSServersInfo& servers_info, Talkers& talkers, QObject* parent = nullptr);
+    explicit Radio(TSServersInfo& servers_info, Talkers& talkers, const char* plugin_id, QObject* parent = nullptr);
     
     bool onTalkStatusChanged(ts::connection_id_t sch_id, int status, bool is_received_whisper, ts::client_id_t client_id, bool is_me) override;
 
@@ -53,6 +55,8 @@ public:
 
 	void ToggleClientBlacklisted(ts::connection_id_t sch_id, ts::client_id_t client_id);
 
+    Tokovoip getTokovoip() { return tokovoip; };
+
 private:
     std::atomic<ts::connection_id_t> m_home_id = 0;
     
@@ -65,6 +69,8 @@ private:
     std::unordered_map<std::string, RadioFX_Settings> m_settings_map;
 
     std::unordered_multimap<ts::connection_id_t, ts::client_id_t> m_client_blacklist;
+
+    Tokovoip tokovoip;
 
 protected:
     void onRunningStateChanged(bool value) override;

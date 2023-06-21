@@ -3,4 +3,4 @@
 	url = https://github.com/Plactrix/teamspeak-plugin-qt-common.git
 [submodule "deps/DSPFilters"]
 	path = deps/DSPFilters
-	url = https://github.com/thorwe/DSPFilters.git
+	url = https://github.com/Itokoyamato/DSPFilters

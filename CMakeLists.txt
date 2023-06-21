@@ -1,59 +1,63 @@
 cmake_minimum_required (VERSION 3.6)
 
+# Find includes in corresponding build directories
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+# Instruct CMake to run moc automatically when needed.
+set(CMAKE_AUTOMOC ON)
+
 project (RadioFx LANGUAGES CXX)
 
 find_package(Qt5 COMPONENTS Gui Widgets REQUIRED)
 link_libraries(Qt5::Gui Qt5::Widgets)
 
-set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 include_directories(
-    "src"
-    "deps/DSPFilters/shared/DSPFilters/include"
+    "${CMAKE_CURRENT_LIST_DIR}/src"
+    "${CMAKE_CURRENT_LIST_DIR}/deps/DSPFilters/shared/DSPFilters/include"
 )
 
 set (DSP_FILTERS
-    "deps/DSPFilters/shared/DSPFilters/source/Bessel.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/Biquad.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/Butterworth.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/Cascade.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/ChebyshevI.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/ChebyshevII.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/Custom.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/Design.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/Documentation.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/Elliptic.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/Filter.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/Legendre.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/Param.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/PoleFilter.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/RBJ.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/RootFinder.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/State.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/deps/DSPFilters/shared/DSPFilters/source/Bessel.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/deps/DSPFilters/shared/DSPFilters/source/Biquad.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/deps/DSPFilters/shared/DSPFilters/source/Butterworth.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/deps/DSPFilters/shared/DSPFilters/source/Cascade.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/deps/DSPFilters/shared/DSPFilters/source/ChebyshevI.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/deps/DSPFilters/shared/DSPFilters/source/ChebyshevII.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/deps/DSPFilters/shared/DSPFilters/source/Custom.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/deps/DSPFilters/shared/DSPFilters/source/Design.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/deps/DSPFilters/shared/DSPFilters/source/Documentation.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/deps/DSPFilters/shared/DSPFilters/source/Elliptic.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/deps/DSPFilters/shared/DSPFilters/source/Filter.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/deps/DSPFilters/shared/DSPFilters/source/Legendre.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/deps/DSPFilters/shared/DSPFilters/source/Param.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/deps/DSPFilters/shared/DSPFilters/source/PoleFilter.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/deps/DSPFilters/shared/DSPFilters/source/RBJ.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/deps/DSPFilters/shared/DSPFilters/source/RootFinder.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/deps/DSPFilters/shared/DSPFilters/source/State.cpp"
 )
 source_group("DSPFilters" FILES ${DSP_FILTERS})
 
 set (PLUGIN_SRC
-    "src/config_radio.h"
-    "src/config_radio.cpp"
-    "src/config_radio.ui"
-    "src/config_radio_groupbox.h"
-    "src/config_radio_groupbox.cpp"
-    "src/config_radio_groupbox.ui"
-    "src/dsp_radio.h"
-    "src/dsp_radio.cpp"
-    "src/mod_radio.h"
-    "src/mod_radio.cpp"
-    "src/plugin.h"
-    "src/plugin.cpp"
-    "src/plugin_qt.h"
-    "src/plugin_qt.cpp"
-    "src/settings_radio.h"
-    "src/settings_radio.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/src/config_radio.h"
+    "${CMAKE_CURRENT_LIST_DIR}/src/config_radio.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/src/config_radio.ui"
+    "${CMAKE_CURRENT_LIST_DIR}/src/config_radio_groupbox.h"
+    "${CMAKE_CURRENT_LIST_DIR}/src/config_radio_groupbox.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/src/config_radio_groupbox.ui"
+    "${CMAKE_CURRENT_LIST_DIR}/src/dsp_radio.h"
+    "${CMAKE_CURRENT_LIST_DIR}/src/dsp_radio.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/src/mod_radio.h"
+    "${CMAKE_CURRENT_LIST_DIR}/src/mod_radio.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/src/plugin.h"
+    "${CMAKE_CURRENT_LIST_DIR}/src/plugin.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/src/plugin_qt.h"
+    "${CMAKE_CURRENT_LIST_DIR}/src/plugin_qt.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/src/settings_radio.h"
+    "${CMAKE_CURRENT_LIST_DIR}/src/settings_radio.cpp"
 
-    "radiofx.qrc"
+    "${CMAKE_CURRENT_LIST_DIR}/radiofx.qrc"
 )
 source_group("plugin" FILES ${PLUGIN_SRC})
 
@@ -80,7 +84,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(WITH_VOLUME true)
 set(WITH_VOLUME_WIDGETS true)
 #add_subdirectory(../teamspeak-plugin-qt-common common_out)
-include(deps/teamspeak-plugin-qt-common/CMakeLists.txt)
+include(${CMAKE_CURRENT_LIST_DIR}/deps/teamspeak-plugin-qt-common/CMakeLists.txt)
 
 add_library(RadioFx SHARED
     ${PLUGIN_SRC} ${TS_QT_CORE} ${TS_QT_VOLUME} ${DSP_FILTERS})

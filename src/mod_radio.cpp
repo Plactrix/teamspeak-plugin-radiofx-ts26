@@ -8,13 +8,19 @@
 
 #include <utility>
 
-Radio::Radio(TSServersInfo& servers_info, Talkers& talkers, QObject* parent)
+// Tokovoip: include
+#include "tokovoip.h"
+
+Radio::Radio(TSServersInfo& servers_info, Talkers& talkers, const char* plugin_id, QObject* parent)
 	: m_servers_info(servers_info)
 	, m_talkers(talkers)
 {
 	setParent(parent);
     setObjectName("Radio");
     m_isPrintEnabled = false;
+
+    // Tokovoip: initialize
+    tokovoip.initialize((char *)plugin_id);
 }
 
 void Radio::setHomeId(ts::connection_id_t sch_id)
@@ -207,7 +213,13 @@ void Radio::onRunningStateChanged(bool value)
 //! Returns true iff it will or has been an active processing
 bool Radio::onTalkStatusChanged(ts::connection_id_t sch_id, int status, bool is_received_whisper, ts::client_id_t client_id, bool is_me)
 {
-    if (is_me || !isRunning())
+    // Tokovoip: talking state
+    if (is_me && status == STATUS_TALKING)
+		sendCallback("startedtalking");
+	if (is_me && status == STATUS_NOT_TALKING)
+		sendCallback("stoppedtalking");
+
+	if (is_me || !isRunning())
         return false;
 
     if (status == STATUS_TALKING)
@@ -232,13 +244,13 @@ bool Radio::onTalkStatusChanged(ts::connection_id_t sch_id, int status, bool is_
             const auto server_id = m_servers_info.get_server_info(sch_id, true)->getUniqueId().toStdString();
             const auto channel_path = TSHelpers::GetChannelPath(sch_id, channel_id).toStdString();
 
-            if (error == ERROR_ok && !channel_path.empty())
-            {
-                const auto settings_map_key = server_id + channel_path;
+            // if (error == ERROR_ok && !channel_path.empty())
+            // {
+            //     const auto settings_map_key = server_id + channel_path;
 
-                if (const auto it = m_settings_map.find(settings_map_key); it != std::cend(m_settings_map))
-                    return m_settings_map.at(settings_map_key);
-            }
+            //     if (const auto it = m_settings_map.find(settings_map_key); it != std::cend(m_settings_map))
+            //         return m_settings_map.at(settings_map_key);
+            // }
 
             if (sch_id == m_home_id.load())
                 return m_settings_map.at("Home");
@@ -280,12 +292,29 @@ bool Radio::onTalkStatusChanged(ts::connection_id_t sch_id, int status, bool is_
  */
 void Radio::onEditPlaybackVoiceDataEvent(ts::connection_id_t sch_id, ts::client_id_t client_id, short *samples, int frame_count, int channels)
 {
+    // Tokovoip: apply radio effects
+    DWORD error;
     if (!(isRunning()))
         return;
 
-	auto* dsp_radio = findRadio(sch_id, client_id);
-	if (dsp_radio)
-		dsp_radio->process(samples, frame_count, channels);
+    char *UUID;
+	if ((error = ts3Functions.getClientVariableAsString(ts3Functions.getCurrentServerConnectionHandlerID(), client_id, CLIENT_UNIQUE_IDENTIFIER, &UUID)) != ERROR_ok) {
+		outputLog("Error getting client UUID", error);
+	} else {
+		if (tokovoip.getSafeRadioData(UUID)) {
+            auto* dsp_radio = findRadio(sch_id, client_id);
+            if (dsp_radio)
+                dsp_radio->process(samples, frame_count, channels);
+        }
+		ts3Functions.freeMemory(UUID);
+	}
+
+    // if (!(isRunning()))
+    //     return;
+
+	// auto* dsp_radio = findRadio(sch_id, client_id);
+	// if (dsp_radio)
+	// 	dsp_radio->process(samples, frame_count, channels);
 }
 
 std::unordered_map<std::string, RadioFX_Settings>& Radio::settings_map_ref()
