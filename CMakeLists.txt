@@ -10,50 +10,50 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 include_directories(
-    "src"
-    "deps/DSPFilters/shared/DSPFilters/include"
+    "deps/teamspeak-plugin-radiofx/src"
+    "deps/teamspeak-plugin-radiofx/deps/DSPFilters/shared/DSPFilters/include"
 )
 
 set (DSP_FILTERS
-    "deps/DSPFilters/shared/DSPFilters/source/Bessel.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/Biquad.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/Butterworth.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/Cascade.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/ChebyshevI.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/ChebyshevII.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/Custom.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/Design.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/Documentation.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/Elliptic.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/Filter.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/Legendre.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/Param.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/PoleFilter.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/RBJ.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/RootFinder.cpp"
-    "deps/DSPFilters/shared/DSPFilters/source/State.cpp"
+    "deps/teamspeak-plugin-radiofx/deps/DSPFilters/shared/DSPFilters/source/Bessel.cpp"
+    "deps/teamspeak-plugin-radiofx/deps/DSPFilters/shared/DSPFilters/source/Biquad.cpp"
+    "deps/teamspeak-plugin-radiofx/deps/DSPFilters/shared/DSPFilters/source/Butterworth.cpp"
+    "deps/teamspeak-plugin-radiofx/deps/DSPFilters/shared/DSPFilters/source/Cascade.cpp"
+    "deps/teamspeak-plugin-radiofx/deps/DSPFilters/shared/DSPFilters/source/ChebyshevI.cpp"
+    "deps/teamspeak-plugin-radiofx/deps/DSPFilters/shared/DSPFilters/source/ChebyshevII.cpp"
+    "deps/teamspeak-plugin-radiofx/deps/DSPFilters/shared/DSPFilters/source/Custom.cpp"
+    "deps/teamspeak-plugin-radiofx/deps/DSPFilters/shared/DSPFilters/source/Design.cpp"
+    "deps/teamspeak-plugin-radiofx/deps/DSPFilters/shared/DSPFilters/source/Documentation.cpp"
+    "deps/teamspeak-plugin-radiofx/deps/DSPFilters/shared/DSPFilters/source/Elliptic.cpp"
+    "deps/teamspeak-plugin-radiofx/deps/DSPFilters/shared/DSPFilters/source/Filter.cpp"
+    "deps/teamspeak-plugin-radiofx/deps/DSPFilters/shared/DSPFilters/source/Legendre.cpp"
+    "deps/teamspeak-plugin-radiofx/deps/DSPFilters/shared/DSPFilters/source/Param.cpp"
+    "deps/teamspeak-plugin-radiofx/deps/DSPFilters/shared/DSPFilters/source/PoleFilter.cpp"
+    "deps/teamspeak-plugin-radiofx/deps/DSPFilters/shared/DSPFilters/source/RBJ.cpp"
+    "deps/teamspeak-plugin-radiofx/deps/DSPFilters/shared/DSPFilters/source/RootFinder.cpp"
+    "deps/teamspeak-plugin-radiofx/deps/DSPFilters/shared/DSPFilters/source/State.cpp"
 )
 source_group("DSPFilters" FILES ${DSP_FILTERS})
 
 set (PLUGIN_SRC
-    "src/config_radio.h"
-    "src/config_radio.cpp"
-    "src/config_radio.ui"
-    "src/config_radio_groupbox.h"
-    "src/config_radio_groupbox.cpp"
-    "src/config_radio_groupbox.ui"
-    "src/dsp_radio.h"
-    "src/dsp_radio.cpp"
-    "src/mod_radio.h"
-    "src/mod_radio.cpp"
-    "src/plugin.h"
-    "src/plugin.cpp"
-    "src/plugin_qt.h"
-    "src/plugin_qt.cpp"
-    "src/settings_radio.h"
-    "src/settings_radio.cpp"
+    "deps/teamspeak-plugin-radiofx/src/config_radio.h"
+    "deps/teamspeak-plugin-radiofx/src/config_radio.cpp"
+    "deps/teamspeak-plugin-radiofx/src/config_radio.ui"
+    "deps/teamspeak-plugin-radiofx/src/config_radio_groupbox.h"
+    "deps/teamspeak-plugin-radiofx/src/config_radio_groupbox.cpp"
+    "deps/teamspeak-plugin-radiofx/src/config_radio_groupbox.ui"
+    "deps/teamspeak-plugin-radiofx/src/dsp_radio.h"
+    "deps/teamspeak-plugin-radiofx/src/dsp_radio.cpp"
+    "deps/teamspeak-plugin-radiofx/src/mod_radio.h"
+    "deps/teamspeak-plugin-radiofx/src/mod_radio.cpp"
+    "deps/teamspeak-plugin-radiofx/src/plugin.h"
+    "deps/teamspeak-plugin-radiofx/src/plugin.cpp"
+    "deps/teamspeak-plugin-radiofx/src/plugin_qt.h"
+    "deps/teamspeak-plugin-radiofx/src/plugin_qt.cpp"
+    "deps/teamspeak-plugin-radiofx/src/settings_radio.h"
+    "deps/teamspeak-plugin-radiofx/src/settings_radio.cpp"
 
-    "radiofx.qrc"
+    "deps/teamspeak-plugin-radiofx/radiofx.qrc"
 )
 source_group("plugin" FILES ${PLUGIN_SRC})
 
@@ -80,7 +80,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(WITH_VOLUME true)
 set(WITH_VOLUME_WIDGETS true)
 #add_subdirectory(../teamspeak-plugin-qt-common common_out)
-include(deps/teamspeak-plugin-qt-common/CMakeLists.txt)
+include(deps/teamspeak-plugin-radiofx/deps/teamspeak-plugin-qt-common/CMakeLists.txt)
 
 add_library(RadioFx SHARED
     ${PLUGIN_SRC} ${TS_QT_CORE} ${TS_QT_VOLUME} ${DSP_FILTERS})
